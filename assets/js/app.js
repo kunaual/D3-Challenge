@@ -32,8 +32,8 @@ function xScale(stateData, chosenXAxis) {
   console.log("in xscale function");
   console.log(stateData[0][chosenXAxis])
   var xLinearScale = d3.scaleLinear()
-    .domain([d3.min(stateData, d => d[chosenXAxis]) ,
-    d3.max(stateData, d => d[chosenXAxis])
+    .domain([d3.min(stateData, d => d[chosenXAxis])  ,  //open Q what is scaling doing?
+    d3.max(stateData, d => d[chosenXAxis] ) 
     ])
     .range([0, width]);
 
@@ -61,11 +61,15 @@ function renderAxes(newXScale, xAxis) {
 
   return xAxis;
 }
-//re-render circles for new chosen X axis value
-function renderCircles(circlesGroup, newXScale, chosenXAxis) {
+//re-render circles and their abbrs for new chosen X axis value
+function renderCircles(circlesGroup, stAbbrGroup, newXScale, chosenXAxis) {
   circlesGroup.transition()
     .duration(1000)
     .attr("cx", d => newXScale(d[chosenXAxis]));
+
+  stAbbrGroup.transition()
+    .duration(1000)
+    .attr("x", d => newXScale(d[chosenXAxis]));
 
   return circlesGroup;
 }
@@ -134,7 +138,7 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
     .on('mouseover', toolTip.show)
     .on('mouseout', toolTip.hide);
 
-  var stAbbrGroup = chartGroup.selectAll("text")
+  var stAbbrGroup = chartGroup.selectAll(null)
     .data(stateData)
     .enter()
     .append("text")
@@ -142,7 +146,7 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
     .attr("x", d => xLinearScale(d[selectedXAxis]))
     .attr("y", d => yLinearScale(d[selectedYAxis]))
     //.attr("dx", d=>-9)
-    .attr("dy", d=>5)
+    .attr("dy", d=>5)  //added to put the text in the center of the circle
     .classed("abbr-text", true);
 
   // put tooltips in the chart
@@ -210,7 +214,7 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
         xAxis = renderAxes(xLinearScale, xAxis);
 
         // updates circles with new x values
-        circlesGroup = renderCircles(circlesGroup, xLinearScale, selectedXAxis);
+        circlesGroup = renderCircles(circlesGroup, stAbbrGroup, xLinearScale, selectedXAxis);
 
         // updates tooltips with new info
         // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
