@@ -40,6 +40,7 @@ function xScale(stateData, chosenXAxis) {
   return xLinearScale;
 
 }
+
 function yScale(stateData, chosenYAxis) {
 
   console.log("in yscale function");
@@ -49,8 +50,27 @@ function yScale(stateData, chosenYAxis) {
     .range([height, 0]);
 
   return yLinearScale;
-
 }
+
+// function used for updating xAxis var upon click on axis label
+function renderAxes(newXScale, xAxis) {
+  var bottomAxis = d3.axisBottom(newXScale);
+
+  xAxis.transition()
+    .duration(1000)
+    .call(bottomAxis);
+
+  return xAxis;
+}
+//re-render circles for new chosen X axis value
+function renderCircles(circlesGroup, newXScale, chosenXAxis) {
+  circlesGroup.transition()
+    .duration(1000)
+    .attr("cx", d => newXScale(d[chosenXAxis]));
+
+  return circlesGroup;
+}
+
 
 
 // Import Data
@@ -83,7 +103,7 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
   var leftAxis = d3.axisLeft(yLinearScale);
 
   // add Axes to the chart
-  chartGroup.append("g")
+  var xAxis = chartGroup.append("g")
     .classed("x-axis", true)
     .attr("transform", `translate(0, ${height})`)
     .call(bottomAxis);
@@ -91,14 +111,14 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
   chartGroup.append("g")
     .call(leftAxis);
 
-
+    console.log(d3.format("$,")(4200));
   // build tooltip for hoverover text display
   var toolTip = d3.tip()
     .attr("class", "d3-tip")
     .offset([80, -60])
     .html(function (d) {
       //br = line break
-      return (`${d.state}<br>Poverty: ${d.poverty}%<br>Lacking Healthcare: ${d.healthcare}%`);
+      return (`${d.state}<br>Poverty: ${d.poverty}%<br>Median Income: ${d3.format("$,")(d.income)}<br>Lacking Healthcare: ${d.healthcare}%`);
     });
 
   // Create Circles
@@ -181,10 +201,10 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
         xLinearScale = xScale(stateData, selectedXAxis);
 
         // updates x axis with transition
-       // xAxis = renderAxes(xLinearScale, xAxis);
+        xAxis = renderAxes(xLinearScale, xAxis);
 
         // updates circles with new x values
-       // circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+        circlesGroup = renderCircles(circlesGroup, xLinearScale, selectedXAxis);
 
         // updates tooltips with new info
        // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
