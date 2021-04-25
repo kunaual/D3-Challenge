@@ -63,6 +63,7 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
     data.poverty = +data.poverty;
     data.healthcare = +data.healthcare;
     data.income = +data.income;
+    data.smokes = +data.smokes;
   });
   console.log(stateData[0].state + " " + stateData[0].abbr);
 
@@ -83,6 +84,7 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
 
   // add Axes to the chart
   chartGroup.append("g")
+    .classed("x-axis", true)
     .attr("transform", `translate(0, ${height})`)
     .call(bottomAxis);
 
@@ -105,8 +107,8 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
     .enter()
     .append("circle")
     .text("Moo")
-    .attr("cx", d => xLinearScale(d.poverty))
-    .attr("cy", d => yLinearScale(d.healthcare))
+    .attr("cx", d => xLinearScale(d[selectedXAxis]))
+    .attr("cy", d => yLinearScale(d[selectedYAxis]))
     .attr("r", "15")
     .attr("fill", "lightblue")
     .attr("opacity", ".5")
@@ -130,6 +132,9 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
   //     toolTip.hide(data);
   //   });
 
+  var labelsXGroup = chartGroup.append("g")
+  .attr("transform", `translate(${width / 2}, ${height + 20})`);
+
   // add axes labels
   chartGroup.append("text")
     .attr("transform", "rotate(-90)")
@@ -139,10 +144,26 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
     .attr("class", "axisText")
     .text("% Lacking Healthcare");
 
-  chartGroup.append("text")
-    .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
-    .attr("class", "axisText")
-    .text("% in Poverty");
+    //this one works
+  // chartGroup.append("text")
+  //   .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
+  //   .attr("class", "axisText")
+  //   .text("% in Poverty");
+
+  var povertyLabel = labelsXGroup.append("text")
+  .attr("x", 0)
+  .attr("y", 20)
+  .attr("value", "poverty") // value to grab for event listener
+  .classed("active", true)
+  .text("% in Poverty");
+    
+  var incomeLabel = labelsXGroup.append("text")
+  .attr("x", 0)
+  .attr("y", 40)
+  .attr("value", "income") // value to grab for event listener
+  .classed("inactive", true)
+  .text("Median Household Income");
+
 }).catch(function (error) {
   console.log(error);
 });
