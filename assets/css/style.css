@@ -37,6 +37,13 @@ body {
   text-anchor: middle;
 }
 
+.abbr-text {
+  font-family: sans-serif;
+  font-weight: bold;
+  fill: white;
+  text-anchor: middle;
+}
+
 .active {
   font-weight: bold;
   fill: #000;
