@@ -164,6 +164,52 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
   .classed("inactive", true)
   .text("Median Household Income");
 
+  // x axis labels event listener
+  labelsXGroup.selectAll("text")
+    .on("click", function() {
+      // get value of selection
+      var value = d3.select(this).attr("value");
+      if (value !== selectedXAxis) {
+
+        // replaces chosenXAxis with value
+        selectedXAxis = value;
+
+        // console.log(chosenXAxis)
+
+        // functions here found above csv import
+        // updates x scale for new data
+        xLinearScale = xScale(stateData, selectedXAxis);
+
+        // updates x axis with transition
+       // xAxis = renderAxes(xLinearScale, xAxis);
+
+        // updates circles with new x values
+       // circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+
+        // updates tooltips with new info
+       // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+
+        // changes classes to change bold text
+        if (selectedXAxis === "poverty") {
+          povertyLabel
+            .classed("active", true)
+            .classed("inactive", false);
+          incomeLabel
+            .classed("active", false)
+            .classed("inactive", true);
+        }
+        else {
+          povertyLabel
+            .classed("active", false)
+            .classed("inactive", true);
+          incomeLabel
+            .classed("active", true)
+            .classed("inactive", false);
+        }
+      }
+    });
+
+
 }).catch(function (error) {
   console.log(error);
 });
