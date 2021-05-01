@@ -1,5 +1,5 @@
 console.log("app.js loaded");
-var svgWidth = 960;
+var svgWidth = 1000;
 var svgHeight = 500;
 
 var margin = {
@@ -33,7 +33,7 @@ function xScale(stateData, chosenXAxis) {
   console.log(stateData[0][chosenXAxis])
   var xLinearScale = d3.scaleLinear()
   /// adding "scaling" means changing the min/max value of the axis (i.e. if the min is equal to the min of a data point, your data point is going to be sitting on the axis)
-    .domain([d3.min(stateData, d => d[chosenXAxis]) *.9 ,  //open Q what is scaling doing?
+    .domain([d3.min(stateData, d => d[chosenXAxis]) *.9 ,  
     d3.max(stateData, d => d[chosenXAxis] *1.05) 
     ])
     .range([0, width]);
@@ -81,7 +81,7 @@ function renderCircles(circlesGroup, stAbbrGroup, newXScale, chosenXAxis) {
 // Import Data
 d3.csv("assets/data/data.csv").then(function (stateData) {
   console.log(stateData); //testing output
-  //xScale(stateData,selectedXAxis);
+  
 
   // convert strings to numbers
   stateData.forEach(function (data) {
@@ -94,14 +94,10 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
 
   // ==============================
   var xLinearScale = xScale(stateData, selectedXAxis);
-  // var xLinearScale = d3.scaleLinear()
-  //   .domain([d3.min(stateData, d => d.poverty) - 1, d3.max(stateData, d => d.poverty)])
-  //   .range([0, width]);
+
 
   var yLinearScale = yScale(stateData, selectedYAxis);
-  // var yLinearScale = d3.scaleLinear()
-  //   .domain([0, d3.max(stateData, d => d.healthcare)])
-  //   .range([height, 0]);
+
 
   // define axes
   var bottomAxis = d3.axisBottom(xLinearScale);
@@ -154,15 +150,6 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
   // put tooltips in the chart
   chartGroup.call(toolTip);
 
-  // put these in the circle group so don't need them above
-  // ==============================
-  // circlesGroup.on("click", function(data) {  //have to click to get it to show up
-  //   toolTip.show(data, this);
-  // })
-  //   // onmouseout event
-  //   .on("mouseout", function(data, index) {
-  //     toolTip.hide(data);
-  //   });
 
   var labelsXGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
@@ -176,11 +163,6 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
     .attr("class", "axisText")
     .text("% Lacking Healthcare");
 
-  //this one works
-  // chartGroup.append("text")
-  //   .attr("transform", `translate(${width / 2}, ${height + margin.top + 30})`)
-  //   .attr("class", "axisText")
-  //   .text("% in Poverty");
 
   var povertyLabel = labelsXGroup.append("text")
     .attr("x", 0)
