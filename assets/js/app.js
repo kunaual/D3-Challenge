@@ -1,5 +1,5 @@
 console.log("app.js loaded");
-var svgWidth = 1000;
+var svgWidth = 960;
 var svgHeight = 500;
 
 var margin = {
@@ -81,7 +81,7 @@ function renderCircles(circlesGroup, stAbbrGroup, newXScale, chosenXAxis) {
 // Import Data
 d3.csv("assets/data/data.csv").then(function (stateData) {
   console.log(stateData); //testing output
-  
+  //xScale(stateData,selectedXAxis);
 
   // convert strings to numbers
   stateData.forEach(function (data) {
@@ -94,7 +94,6 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
 
   // ==============================
   var xLinearScale = xScale(stateData, selectedXAxis);
-
 
   var yLinearScale = yScale(stateData, selectedYAxis);
 
@@ -116,7 +115,6 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
   // build tooltip for hoverover text display
   var toolTip = d3.tip()
     .attr("class", "d3-tip")
-    .offset([80, -60])
     .html(function (d) {
       //br = line break
       return (`${d.state}<br>Poverty: ${d.poverty}%<br>Median Income: ${d3.format("$,")(d.income)}<br>Lacking Healthcare: ${d.healthcare}%`);
@@ -134,6 +132,7 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
     .attr("fill", "darkblue")
     .attr("opacity", ".6")
     .on('mouseover', toolTip.show)
+   // .on('click',toolTip.hide);
     .on('mouseout', toolTip.hide);
 
   var stAbbrGroup = chartGroup.selectAll(null)
@@ -158,7 +157,7 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
   chartGroup.append("text")
     .attr("transform", "rotate(-90)")
     .attr("y", 0 - margin.left + 40)
-    .attr("x", 0 - (height / 2))
+    .attr("x", 0 - (height / 2)-60)
     .attr("dy", "1em")//move closer/further from dy
     .attr("class", "axisText")
     .text("% Lacking Healthcare");
@@ -190,7 +189,6 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
 
         // console.log(chosenXAxis)
 
-        // functions here found above csv import
         // updates x scale for new data
         xLinearScale = xScale(stateData, selectedXAxis);
 
@@ -200,8 +198,6 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, stAbbrGroup, xLinearScale, selectedXAxis);
 
-        // updates tooltips with new info
-        // circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
         // changes classes to change bold text
         if (selectedXAxis === "poverty") {
