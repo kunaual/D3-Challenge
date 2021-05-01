@@ -81,7 +81,6 @@ function renderCircles(circlesGroup, stAbbrGroup, newXScale, chosenXAxis) {
 // Import Data
 d3.csv("assets/data/data.csv").then(function (stateData) {
   console.log(stateData); //testing output
-  //xScale(stateData,selectedXAxis);
 
   // convert strings to numbers
   stateData.forEach(function (data) {
@@ -132,7 +131,6 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
     .attr("fill", "darkblue")
     .attr("opacity", ".6")
     .on('mouseover', toolTip.show)
-   // .on('click',toolTip.hide);
     .on('mouseout', toolTip.hide);
 
   var stAbbrGroup = chartGroup.selectAll(null)
