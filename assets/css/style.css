@@ -33,7 +33,6 @@ body {
 .axis-text {
   font-family: sans-serif;
   font-weight: bold;
-  fill: darkblue;
   text-anchor: middle;
 }
 
@@ -45,16 +44,16 @@ body {
 }
 
 .active {
+  font-family: sans-serif;
   font-weight: bold;
   fill: #000;
-  fill: darkblue;
   transition: fill 0.3s ease-out;
   text-anchor: middle;
 }
 
 .inactive {
+  font-family: sans-serif;
   font-weight: lighter;
-  fill: darkblue;
   transition: fill 0.3s ease-out;
   text-anchor: middle;
 }

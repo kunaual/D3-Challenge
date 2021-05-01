@@ -157,9 +157,9 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
   chartGroup.append("text")
     .attr("transform", "rotate(-90)")
     .attr("y", 0 - margin.left + 40)
-    .attr("x", 0 - (height / 2)-60)
+    .attr("x", 0 - (height / 2))
     .attr("dy", "1em")//move closer/further from dy
-    .attr("class", "axisText")
+    .attr("class", "axis-text")
     .text("% Lacking Healthcare");
 
 
