@@ -32,8 +32,9 @@ function xScale(stateData, chosenXAxis) {
   console.log("in xscale function");
   console.log(stateData[0][chosenXAxis])
   var xLinearScale = d3.scaleLinear()
-    .domain([d3.min(stateData, d => d[chosenXAxis])  ,  //open Q what is scaling doing?
-    d3.max(stateData, d => d[chosenXAxis] ) 
+  /// adding "scaling" means changing the min/max value of the axis (i.e. if the min is equal to the min of a data point, your data point is going to be sitting on the axis)
+    .domain([d3.min(stateData, d => d[chosenXAxis]) *.9 ,  //open Q what is scaling doing?
+    d3.max(stateData, d => d[chosenXAxis] *1.05) 
     ])
     .range([0, width]);
 
@@ -45,7 +46,8 @@ function yScale(stateData, chosenYAxis) {
   console.log("in yscale function");
   console.log(stateData[0][chosenYAxis])
   var yLinearScale = d3.scaleLinear()
-    .domain([d3.min(stateData, d => d[chosenYAxis]), d3.max(stateData, d => d[chosenYAxis])])
+    .domain([d3.min(stateData, d => d[chosenYAxis]) *.5, 
+    d3.max(stateData, d => d[chosenYAxis]) *1.1 ]) 
     .range([height, 0]);
 
   return yLinearScale;
